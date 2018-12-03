@@ -2,3 +2,5 @@ package: github.com/fluk27/testgo
 import:
 - package: github.com/labstack/echo
   version: ^3.3.8
+- package: github.com/go-sql-driver/mysql
+  version: ^1.4.1
