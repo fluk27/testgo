@@ -8,6 +8,6 @@ import (
 func userRoutes(route *echo.Echo) {
 	user := &controllers.UserController{}
 	route.GET("/users", user.ListUserAll)
-	route.GET("/user/:id", user.FindByID)
+	route.GET("/users/:id", user.FindByID)
 
 }

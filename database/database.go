@@ -1,8 +1,8 @@
 package database
 
- import (
-	"fmt"
+import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -10,71 +10,60 @@ package database
 // ConnectDatabase is result database
 func ConnectDatabase() (*sql.DB, error) {
 
-	db, err := sql.Open("mysql", "root:@/s.a.d")
+	db, err := sql.Open("mysql", "pskclub:12345678@tcp(192.168.0.105:3306)/s.a.d")
 	if err != nil {
-		fmt.Println("error from connect",err)
+		fmt.Println("error from connect", err)
 		return nil, err
 	}
-	
+
 	return db, nil
 }
+
 // QueryString is function result database
 func QueryString(queryString string, db *sql.DB) (*sql.Rows, error) {
-
 	rows, err := db.Query(queryString)
 	if err != nil {
-		fmt.Println("error from querystring",err)
+		fmt.Println("error from querystring", err)
 		return nil, err
 	}
 	return rows, nil
 }
-func ResultColumns(db *sql.Rows)  ([]string,error){
-	columns,err := db.Columns()
+
+func ResultValue(rows *sql.Rows) ([]map[string]interface{}, error) {
+	var result []map[string]interface{}
+	columns, err := rows.Columns()
 	if err != nil {
-		fmt.Println("error from resultcolumns",err)
-		return nil,err 
-	} 
-	
-
-	return columns,err
-}
-func ResultValue(db *sql.Rows,name []string)  ([]string,error){
-	resultValue :=make([]interface{},len(name))
-	valueToFunction :=make([]string,len(name))
-	ToFunction :=make([]string,0)
-	fmt.Println("this is value of resultValue",len(resultValue))
-	for i := range valueToFunction {
-		resultValue[i] = &valueToFunction[i]
+		return nil, err
 	}
-	
-	for db.Next(){
-		err :=db.Scan(resultValue...)
+	values := make([]sql.RawBytes, len(columns))
+	scanArgs := make([]interface{}, len(values))
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	// Fetch rows
+	for rows.Next() {
+		// get RawBytes from data
+		item := make(map[string]interface{})
+		err = rows.Scan(scanArgs...)
 		if err != nil {
-			fmt.Println("error from next.scan",err)
-			return nil,err 
+			return nil, err
 		}
-			for _, value := range valueToFunction {
-				if value == "" {
-					value ="555"
-				}
-				fmt.Println("this is  value of valueToFunction",valueToFunction)
-			//	fmt.Println("this is value of ToFunction in array",ToFunction[15])
-				fmt.Println("this is col =",value)
-				ToFunction = append(ToFunction,value)	
-				//fmt.Println("this is value in range =",ToFunction)
+		var value string
+		for i, col := range values {
+			if col == nil {
+				value = "NULL"
+			} else {
+				value = string(col)
 			}
-			
-			fmt.Println("this is resultValue",valueToFunction[0])
-			//var value string
-	//
-	
-		//return valueToFunction,nil
-	}
-	//fmt.Println("this is value of valueToFunction",valueToFunction)
-	if err := db.Err();err != nil{
-		return nil,err
-	}
 
-	fmt.Println("this is value of ToFunction",ToFunction,len(ToFunction))
-	return ToFunction,nil
+			item[columns[i]] = value
+		}
+
+		result = append(result, item)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return result, nil
 }

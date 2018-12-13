@@ -1,5 +1,5 @@
-hash: 9fb2869ec797e366364b36aba9370174657e801b6104e66a68d0b5a771957a88
-updated: 2018-12-02T21:11:53.410263+07:00
+hash: 1cf0806da87c5e6160e4c7f8b985ffa782d96137d9e89519d31c5e4c2cfdadc7
+updated: 2018-12-13T14:44:30.969377455+07:00
 imports:
 - name: github.com/go-sql-driver/mysql
   version: 72cd26f257d44c1114970e19afddcd812016007e
@@ -14,17 +14,23 @@ imports:
   version: efa589957cd060542a26d2dd7832fd6a6c6c3ade
 - name: github.com/mattn/go-isatty
   version: 3fb116b820352b7f0c281308a4d6250c22d94e27
+- name: github.com/mitchellh/mapstructure
+  version: 3536a929edddb9a5b34bd6861dc4a9647cb459fe
 - name: github.com/valyala/bytebufferpool
   version: cdfbe9377474227bb42120c1e22fd4433e7f69bf
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: eb0de9b17e854e9b1ccd9963efafc79862359959
+  version: 505ab145d0a99da450461ae2c1a9f6cd10d1f447
   subpackages:
   - acme
   - acme/autocert
 - name: golang.org/x/sys
-  version: 4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31
+  version: b05ddf57801d2239d6ab0ee35f9d981e0420f4ac
   subpackages:
   - unix
+- name: google.golang.org/appengine
+  version: a37df1387b4521194676d88c79230c613610d5f4
+  subpackages:
+  - cloudsql
 testImports: []
