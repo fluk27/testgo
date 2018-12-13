@@ -9,15 +9,18 @@ import (
 )
 
 //BookController is struct
-
+type BookController struct {
+	
+}
 // List this book.controller
-func  List(c echo.Context) error {
-	bookService := &services.BookService{}
+func (b *BookController) List(c echo.Context) error {
+	bookService :=&services.BookService{}
+	
 	return c.JSON(http.StatusOK, bookService.FindAll())
 }
 
 // Find this book.controller
-func  Find(c echo.Context) error {
+func (b *BookController) Find(c echo.Context) error {
 	bookService := services.BookService{}
 	id := c.Param("id")
 	book,err := bookService.FindByID(id)

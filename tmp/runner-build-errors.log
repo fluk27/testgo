@@ -1,0 +1,2 @@
+# github.com/fluk27/testgo/database
+database\database.go:80:2: syntax error: unexpected * after top level declaration

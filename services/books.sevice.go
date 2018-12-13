@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/fluk27/testgo/models"
 )
@@ -14,18 +15,10 @@ type BookService struct {
 var bookname string
 
 //FindAll list all data
-func (BookService) FindAll() []models.Book {
-	books := []models.Book{
-		models.Book{
-			ID:   "001",
-			Name: "golang",
-		},
-		models.Book{
-			ID:   "002",
-			Name: "vue.js",
-		},
-	}
-	return books
+func (BookService) FindAll() *models.Book {
+	books := models.Book{}
+	fmt.Printf("this is value book %x", books)
+	return &books
 }
 
 // FindByID is for Controller

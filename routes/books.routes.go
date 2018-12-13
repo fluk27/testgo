@@ -7,6 +7,6 @@ import (
 
 func booksRoutes(route *echo.Echo) {
 	book := &controllers.BookController{}
-	route.GET("/books",book.List)
-	route.GET("/books/:id",book.Find)
+	route.GET("/books", book.List)
+	route.GET("/books/:id", book.Find)
 }

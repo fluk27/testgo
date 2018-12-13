@@ -7,5 +7,7 @@ import (
 
 func userRoutes(route *echo.Echo) {
 	user := &controllers.UserController{}
-	route.GET("/users", user.List)
+	route.GET("/users", user.ListUserAll)
+	route.GET("/user/:id", user.FindByID)
+
 }
