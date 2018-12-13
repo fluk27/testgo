@@ -26,7 +26,7 @@ func (UserController) FindByID(c echo.Context) error {
 	userService := &services.UserService{}
 	valueByFindID := c.Param("id")
 	user, err := userService.FindByID(valueByFindID)
-	if err != nil {
+	if err != nil || user == nil {
 		return c.JSON(http.StatusNotFound, &map[string]interface{}{
 			"code" : "FIND_NOT_FOUND",
 			"message" : "find not found ",

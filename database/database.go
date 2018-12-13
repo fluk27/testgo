@@ -10,7 +10,7 @@ package database
 // ConnectDatabase is result database
 func ConnectDatabase() (*sql.DB, error) {
 
-	db, err := sql.Open("mysql", "root:@/s.a.d")
+	db, err := sql.Open("mysql", "peew:0844038001@/s.a.d")
 	if err != nil {
 		fmt.Println("error from connect",err)
 		return nil, err
