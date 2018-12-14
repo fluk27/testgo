@@ -1,0 +1,7 @@
+
+\.idea/
+vendor
+fresh.exe
+glide.exe
+glide.lock
+glide.yaml
