@@ -147,7 +147,7 @@ func (UserController) CheckEmpty(id string, firstName string, lastName string) (
 	
 	}
 	//fmt.Println(len(resultCheckEmpty)," and ",len(err))
-	if len(err) != 0 {
+	if len(errIDFields) != 0 {
 		fmt.Println(len(resultCheckEmpty)," and ",len(err))
 		return nil,err
 	}
