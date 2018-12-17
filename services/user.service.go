@@ -49,7 +49,7 @@ func (UserService) FindByID(id string) (*models.User, error) {
 	var user models.User
 	result, err := database.ResultValue(query)
 	if err != nil || len(result) == 0 {
-		errors.New("c")
+		err =errors.New("No data")
 		fmt.Println("error from ResultValue", err)
 		return nil, err
 	}
@@ -74,15 +74,12 @@ func (UserService) CheckUser(id string) (*sql.DB, error) {
 
 	result, err := database.ResultValue(query)
 	//fmt.Println("value of result   =",result)
-	if err != nil {
+	if err != nil || len(result) == 0 {
 		return nil, err
 	}
-	if len(result) == 0 {
-		fmt.Println("value of result == 0  =", result)
-		return DB, nil
-	}
+			return DB, nil
 
-	return nil, err
+	//return nil, err
 
 }
 func (U UserService) AddUsers(id string, firstName string, lastName string) (interface{}, error) {
@@ -99,7 +96,8 @@ func (U UserService) AddUsers(id string, firstName string, lastName string) (int
 	//bb,err :=aa.Query()
 	userID, err := U.FindByID(id)
 	fmt.Println("this is user ID before =", userID)
-	if err != nil || userID == nil {
+	MSGerror:=fmt.Sprintf("%v",err)
+	if err != nil && MSGerror != "No data" || userID != nil  {
 		fmt.Println("this is userID =", userID, err)
 		return nil, err
 	}

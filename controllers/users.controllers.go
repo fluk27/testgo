@@ -12,6 +12,7 @@ import (
 type UserController struct {
 }
 
+
 // List function
 func (UserController) ListUserAll(c echo.Context) error {
 	userService := &services.UserService{}
@@ -72,11 +73,11 @@ func (Uc UserController) Add(c echo.Context) error {
 	idUser := fmt.Sprintf("%v", dataUser)
 
 	//msg := string(user)
-	user, errorFindByID := userService.FindByID(idUser)
-	fmt.Println("this is errorFindByID",errorFindByID)
-	msgError := fmt.Sprintf("%v", errorFindByID)
+	user, err := userService.FindByID(idUser)
+	//fmt.Println("this is errorFindByID",errorFindByID)
+	//msgError := fmt.Sprintf("%v", errorFindByID)
 	//fmt.Println("this is user ID before =", user)
-	if  msgError != "find not found" {
+	if  err != nil {
 		fmt.Println("this is user =", user, err)
 		return c.JSON(http.StatusNotFound, &map[string]interface{}{
 			"code":    "ID_DUPLICATE",
@@ -92,46 +93,61 @@ func (Uc UserController) Add(c echo.Context) error {
 	}*/
 	return c.JSON(http.StatusOK, user)
 }
-func (UserController) CheckEmpty(id string, firstName string, lastName string) ([]string, []interface{}) {
-	err := make([]interface{}, 0)
+func (UserController) CheckEmpty(id string, firstName string, lastName string) ([]string, interface{}) {
+	
+		errIDFields :=  map[string]interface{}{}
+
+	errID := map[string]interface{}{}
+	errfirstName := map[string]interface{}{}
+	errlastName := map[string]interface{}{}
+
+	//resultErr := make([] map[string]interface{}, 0)
 	resultCheckEmpty := make([]string, 0)
 //	resultCheckEmpty = append(resultCheckEmpty, id, firstName, lastName)
 	if id == "" {
-		errID := map[string]interface{}{
-			"code":    "ID_IS_REQUEST",
-			"message": "id is request ",
+		errID = map[string]interface{}{
+			"code": "REQUIRED",
+			"message": "non zero value required",
 		}
-		err = append(err, errID)
-
+		//resultErr = append(resultErr, errID)
+		errIDFields["ID"] = errID
+	
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty, id)	
 	}
 	
 	if firstName == "" {
-		errfirstName := map[string]interface{}{
-			"code":    "firstName_IS_REQUEST",
-			"message": "firstName is request ",
+	
+		errfirstName = map[string]interface{}{
+			"code": "REQUIRED",
+			"message": "non zero value required",
 		}
-		err = append(err, errfirstName)
+		//resultErr = append(resultErr, errfirstName)
+		errIDFields["firstName"] = errfirstName
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty,firstName)	
 	}
 
 	
 	if lastName == "" {
-		errlastName := map[string]interface{}{
-			"code":    "lastName_IS_REQUEST",
-			"message": "lastName is request ",
+		errlastName = map[string]interface{}{
+			"code": "REQUIRED",
+			"message": "non zero value required",
 		}
-		err = append(err, errlastName)
-
+		//resultErr = append(resultErr, errlastName)
+		errIDFields["lastName"] = errlastName
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty,  lastName)	
 	}
 	
+	err := map[string]interface{}{
+		"code": "INVALID_PARAMS",
+	"message": "Invalid parameters",
+	"fields":errIDFields,
 	
+	}
 	//fmt.Println(len(resultCheckEmpty)," and ",len(err))
-	if len(resultCheckEmpty) <=len(err) {
+	if len(err) != 0 {
 		fmt.Println(len(resultCheckEmpty)," and ",len(err))
 		return nil,err
 	}
