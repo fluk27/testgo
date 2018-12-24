@@ -11,7 +11,11 @@ import (
 //UserController is struct
 type UserController struct {
 }
-
+type errFilede struct {
+	Code string                                 `json:code`
+	Message string								`json:message`
+	Fields map[string]map[string]interface{}    `json:fields`
+}
 
 // List function
 func (UserController) ListUserAll(c echo.Context) error {
@@ -84,74 +88,74 @@ func (Uc UserController) Add(c echo.Context) error {
 			"message": "id duplicate ",
 		})
 	}
-	/*user, err := userService.FindByID(idUser)
-	if err != nil || user == nil {
-		return c.JSON(http.StatusNotFound, &map[string]interface{}{
-			"code":    "ID_DUPLICATE",
-			"message": "id duplicate ",
-		})
-	}*/
+
 	return c.JSON(http.StatusOK, user)
 }
 func (UserController) CheckEmpty(id string, firstName string, lastName string) ([]string, interface{}) {
 	
-		errIDFields :=  map[string]interface{}{}
-
-	errID := map[string]interface{}{}
-	errfirstName := map[string]interface{}{}
-	errlastName := map[string]interface{}{}
-
-	//resultErr := make([] map[string]interface{}, 0)
+	ED:=&errFilede{}
+	ED.Code="INVALID_PARAMS"
+		ED.Message="Invalid parameters"
+		var dataID = map[string]map[string]interface{}{}
 	resultCheckEmpty := make([]string, 0)
-//	resultCheckEmpty = append(resultCheckEmpty, id, firstName, lastName)
-	if id == "" {
-		errID = map[string]interface{}{
-			"code": "REQUIRED",
-			"message": "non zero value required",
-		}
-		//resultErr = append(resultErr, errID)
-		errIDFields["ID"] = errID
+
 	
+	if id == "" {
+		
+		dataID["ID"]=map[string]interface{}{
+				"code": "REQUIRED",
+				"message": "non zero value required",
+			}
+	
+		
+		
+		
+		ED.Fields=dataID
+	
+	//fmt.Println(dataID)
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty, id)	
 	}
 	
+	fmt.Println("afer id empty =",ED)
 	if firstName == "" {
-	
-		errfirstName = map[string]interface{}{
+
+		dataID["fristName"]=map[string]interface{}{
 			"code": "REQUIRED",
 			"message": "non zero value required",
 		}
-		//resultErr = append(resultErr, errfirstName)
-		errIDFields["firstName"] = errfirstName
+
+	
+	
+	
+	ED.Fields=dataID
+		
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty,firstName)	
 	}
-
+	
 	
 	if lastName == "" {
-		errlastName = map[string]interface{}{
+		dataID["lastName"]=map[string]interface{}{
 			"code": "REQUIRED",
 			"message": "non zero value required",
 		}
-		//resultErr = append(resultErr, errlastName)
-		errIDFields["lastName"] = errlastName
+
+	
+	
+	
+	ED.Fields=dataID
 	}else {
 		resultCheckEmpty = append(resultCheckEmpty,  lastName)	
 	}
 	
-	err := map[string]interface{}{
-		"code": "INVALID_PARAMS",
-	"message": "Invalid parameters",
-	"fields":errIDFields,
-	
-	}
+	fmt.Println("this all stuct =",ED)
 	//fmt.Println(len(resultCheckEmpty)," and ",len(err))
-	if len(errIDFields) != 0 {
-		fmt.Println(len(resultCheckEmpty)," and ",len(err))
-		return nil,err
+	if len(ED.Fields) != 0 {
+		fmt.Println(len(resultCheckEmpty)," and ",len(ED.Fields))
+		return nil,ED
 	}
-	fmt.Println("this is resultCheckEmpty =",resultCheckEmpty)
+	//fmt.Println("this is resultCheckEmpty =",resultCheckEmpty)
 	return resultCheckEmpty,nil
 
 }
